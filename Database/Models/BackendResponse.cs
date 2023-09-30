@@ -14,6 +14,7 @@ public class BackendResponse
     public List<ProductFridge> Products { get; set; }
     public ErrorMessage Error { get; set; }
     public List<Giveaway> Giveaways { get; set;}
+    public List<ProductDictionary> ProductDictionary { get; set; }
 
     public Giveaway Giveaway { get; set; }
 }

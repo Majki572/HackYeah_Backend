@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendApp", "BackendApp\BackendApp.csproj", "{A99347F9-0841-467B-BD85-B9DB1FB189FC}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Database\Database.csproj", "{C7306B3F-8750-41A2-B116-EC5A9F174C6A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "HackyeahBackend\Backend.csproj", "{6638D2FE-7317-44FC-8C77-96146A2AF1A4}"
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A99347F9-0841-467B-BD85-B9DB1FB189FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A99347F9-0841-467B-BD85-B9DB1FB189FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A99347F9-0841-467B-BD85-B9DB1FB189FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A99347F9-0841-467B-BD85-B9DB1FB189FC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C7306B3F-8750-41A2-B116-EC5A9F174C6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C7306B3F-8750-41A2-B116-EC5A9F174C6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7306B3F-8750-41A2-B116-EC5A9F174C6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
