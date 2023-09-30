@@ -5,13 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Database.Models.Fridge;
 
-namespace Database.Models
+namespace Database.Models;
+public class User
 {
-    public class User
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
+    public string Username { get;set; }
+    public string? Password { get; set; }
+    public string Location { get; set; }
+    public string? Email { get; set; }
 
-        public string Name { get; set; }
 
         public Fridge.Fridge Fridge { get; set; }
     }
