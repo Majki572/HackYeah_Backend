@@ -7,5 +7,6 @@ public class Message
     public int ReceiverId { get; set; }
     public DateTime Timestamp { get; set; }
     public string Text { get; set;  }
+    private bool IsSeen { get; set; }
     public Conversation Conversation { get; set; }
 }

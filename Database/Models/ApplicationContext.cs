@@ -46,7 +46,10 @@ public class ApplicationContext : DbContext
             .HasForeignKey(e => e.ReceiverId);
 
 
-            
+        modelBuilder.Entity<Conversation>()
+            .HasMany(e => e.Messages)
+            .WithOne(e => e.Conversation)
+            .HasForeignKey(e => e.Id);
     }
 
 }
