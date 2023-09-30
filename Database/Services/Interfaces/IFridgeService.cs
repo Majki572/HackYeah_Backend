@@ -10,5 +10,5 @@ namespace Database.Services.Interfaces;
 public interface IFridgeService
 {
     public Task<BackendResponse> GetFridgeById(int fridgeId);
-    public Task<BackendResponse> CreateFridge(Fridge fridge, int userID);
+    public Task<BackendResponse> CreateFridge(Fridge fridge, int userId);
 }

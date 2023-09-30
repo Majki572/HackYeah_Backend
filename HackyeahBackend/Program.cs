@@ -1,4 +1,6 @@
 using Database.Models;
+using Database.Services;
+using Database.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationContext>();
+
+builder.Services.AddTransient<IFridgeService, FridgeService>(provider => new ChatLogicService(provider.GetService()));
 
 
 var app = builder.Build();
