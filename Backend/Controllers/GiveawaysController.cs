@@ -28,7 +28,7 @@ namespace Backend.Controllers
 
         // GET: api/Giveaways
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Giveaway>>> GetGiveaways([FromQuery]Coordinates? coordinates, double? maxDistance)
+        public async Task<ActionResult<IEnumerable<GiveawayDTO>>> GetGiveaways([FromQuery]Coordinates? coordinates, double? maxDistance)
         {
             if (coordinates != null && maxDistance != null)
             {
@@ -36,7 +36,7 @@ namespace Backend.Controllers
 
                 if (result.Error == null)
                 {
-                    return Ok(result.Giveaways);
+                    return Ok(result.Giveaways.Select(g => new GiveawayDTO(g)));
                 }
                 else
                 {
@@ -49,7 +49,7 @@ namespace Backend.Controllers
 
                 if(result.Error == null)
                 {
-                    return Ok(result.Giveaways);
+                    return Ok(result.Giveaways.Select(g => new GiveawayDTO(g)));
                 }
                 else
                 {
@@ -60,7 +60,7 @@ namespace Backend.Controllers
 
         // GET: api/Giveaways/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Giveaway>> GetGiveaway(int id)
+        public async Task<ActionResult<GiveawayDTO>> GetGiveaway(int id)
         {
             if (_context.Giveaways == null)
             {
@@ -73,7 +73,7 @@ namespace Backend.Controllers
                 return NotFound();
             }
 
-            return giveaway;
+            return new GiveawayDTO(giveaway);
         }
 
         // PUT: api/Giveaways/5
@@ -110,13 +110,13 @@ namespace Backend.Controllers
         // POST: api/Giveaways
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Giveaway>> PostGiveaway([FromBody]NewGiveawayDTO giveaway)
+        public async Task<ActionResult<GiveawayDTO>> PostGiveaway([FromBody]NewGiveawayDTO giveaway)
         {
             var result = await giveawayService.CreateGiveaway((Giveaway)giveaway);
 
             if(result.Error == null)
             {
-                return Ok(result.Giveaway);
+                return Ok(new GiveawayDTO(result.Giveaway));
             }
             else
             {
