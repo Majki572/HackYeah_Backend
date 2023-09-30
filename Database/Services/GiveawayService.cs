@@ -24,7 +24,7 @@ public class GiveawayService
         {
             await _context.Giveaways.AddAsync(giveaway);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             backendResponse = new BackendResponse();
             backendResponse.Error.Message = ex.Message;
@@ -43,9 +43,98 @@ public class GiveawayService
         }
 
         var result = await _context.Giveaways.FindAsync(giveawayId);
+
+        if (result == null)
+        {
+            backendResponse.Error.Message = "Not found";
+        }
         backendResponse.Giveaway = result;
 
         return backendResponse;
-
     }
+
+    public async Task<BackendResponse> GetGiveaways(Coordinates coordinates, double maxDistance)
+    {
+        BackendResponse backendResponse = new BackendResponse();
+
+        try
+        {
+            var result = _context.Giveaways.ToList();
+
+            backendResponse.Giveaways = result.Where(g => CalculateDistance(coordinates, new Coordinates(g.Latitude, g.Longitude)) < maxDistance).ToList();
+        }
+        catch (Exception e)
+        {
+            backendResponse.Error = new ErrorMessage();
+            backendResponse.Error.Message = e.Message;
+        }
+
+
+        return backendResponse;
+    }
+
+    public async Task<BackendResponse> GetGiveaways()
+    {
+        BackendResponse backendResponse = new BackendResponse();
+
+        try
+        {
+            var result = _context.Giveaways.ToList();
+            backendResponse.Giveaways = result;
+        }
+        catch (Exception e)
+        {
+            backendResponse.Error = new ErrorMessage();
+            backendResponse.Error.Message = e.Message;
+        }
+
+
+        return backendResponse;
+    }
+
+    // public async Task<BackendResponse>
+
+    private static double CalculateDistance(Coordinates coord1, Coordinates coord2)
+    {
+        const double earthRadius = 6371;
+
+        // Convert degrees to radians
+        double lat1Rad = ToRadians(coord1.Latitude);
+        double lon1Rad = ToRadians(coord1.Longitude);
+        double lat2Rad = ToRadians(coord2.Latitude);
+        double lon2Rad = ToRadians(coord2.Longitude);
+
+        // Haversine formula
+        double dLat = lat2Rad - lat1Rad;
+        double dLon = lon2Rad - lon1Rad;
+
+        double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                   Math.Cos(lat1Rad) * Math.Cos(lat2Rad) *
+                   Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+
+        double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+        double distance = earthRadius * c;
+
+        return distance;
+    }
+
+    private static double ToRadians(double degrees)
+    {
+        return degrees * (Math.PI / 180);
+    }
+}
+
+public class Coordinates
+{
+    public Coordinates(double latitude, double longitude)
+    {
+        Latitude = latitude;
+        Longitude = longitude;
+    }
+
+    public Coordinates() { }
+
+    public double Latitude { get; set; }
+
+    public double Longitude { get; set; }
 }
