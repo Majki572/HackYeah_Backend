@@ -21,7 +21,7 @@ public class UserController : ControllerBase
         _applicationContext = applicationContext;
     }
 
-    [HttpGet("login")]
+    [HttpPost("login")]
     public ActionResult<UserDTO> Login([FromBody] LoginDTO loginDto)
     {
         var user = _applicationContext.Users.FirstOrDefault(x => x.Username == loginDto.Username);
