@@ -23,7 +23,7 @@ public class ApplicationContext : DbContext
 
 
     public DbSet<Fridge> Fridges { get; set; }
-    public DbSet<Product> Products { get; set; }
+    public DbSet<ProductFridge> Products { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Giveaway> Giveaways { get; set; }
 

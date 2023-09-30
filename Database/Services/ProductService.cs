@@ -16,19 +16,60 @@ public class ProductService : IProductService
     {
         _context = context;
     }
-    public Task<BackendResponse> AddProductToFridge(Product product, int userId, int fridgeId)
+    public async Task<BackendResponse> AddProductToFridge(ProductFridge product, int userId, int fridgeId)
     {
-        throw new NotImplementedException();
+        var response = new BackendResponse();
+        if(userId != fridgeId)
+        {
+            response.Error.Message = "User id and fridge id does not match.";
+            return response;
+        }
+        await _context.Products.AddAsync(product);
+        await _context.SaveChangesAsync();
 
+        return response;
     }
 
-    public Task<BackendResponse> GetProductsFromFridge(int fridgeId)
+    public async Task<BackendResponse> GetProductsFromFridge(int fridgeId)
     {
-        throw new NotImplementedException();
+        var response = new BackendResponse();
+        if (fridgeId <= 0)
+        {
+            response.Error.Message = "This fridge does not have any products.";
+            return response;
+        }
+
+        response.Products = await _context.Products.Where(x => x.FridgeId == fridgeId).ToListAsync();
+
+        if (!response.Products.Any())
+        {
+            response.Error.Message = "This fridge does not have any products.";
+            return response;
+        }
+
+        return response;
     }
 
-    public Task<BackendResponse> RemoveProductFromFridge(Product product, int userId, int fridgeId)
+    public async Task<BackendResponse> RemoveProductFromFridge(ProductFridge product, int userId, int fridgeId)
     {
-        throw new NotImplementedException();
+        var response = new BackendResponse();
+        if (userId != fridgeId)
+        {
+            response.Error.Message = "User id and fridge id does not match.";
+            return response;
+        }
+
+        var dbProduct = await _context.Products.FindAsync(product.Id);
+
+        if (dbProduct == null)
+        {
+            response.Error.Message = "Product does not exist in this fridge.";
+            return response;
+        }
+
+        var result = _context.Products.Remove(product);
+        await _context.SaveChangesAsync();
+
+        return response;
     }
 }

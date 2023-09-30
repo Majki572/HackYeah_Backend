@@ -1,5 +1,5 @@
 ﻿namespace Database.Models;
-public class Product
+public class ProductFridge
 {
     public int Id { get; set; }
     public string Name { get; set; }

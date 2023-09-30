@@ -20,7 +20,7 @@ namespace Database.Models
 
         public int ProductId { get; set; }
 
-        public Product Product { get; set; } = null!;
+        public ProductFridge Product { get; set; } = null!;
 
         public int ReceiverId { get; set; }
 
