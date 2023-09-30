@@ -53,6 +53,11 @@ public class ApplicationContext : DbContext
             .HasMany(e => e.Messages)
             .WithOne(e => e.Conversation)
             .HasForeignKey(e => e.Id);
+
+        modelBuilder.Entity<Message>()
+            .HasOne(e => e.Conversation)
+            .WithMany(e => e.Messages)
+            .HasForeignKey(e => e.ConversationId);
     }
 
 }

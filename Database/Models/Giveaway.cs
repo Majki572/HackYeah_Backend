@@ -16,11 +16,15 @@ namespace Database.Models
 
         public DateTime? ExpirationDate { get; set; }
 
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
         public DateTime CreateDate { get; set; }
 
         public int ProductId { get; set; }
 
-        public ProductFridge Product { get; set; } = null!;
+        public ProductDictionary Product { get; set; } = null!;
 
         public int ReceiverId { get; set; }
 
@@ -29,7 +33,6 @@ namespace Database.Models
         public int? Amount { get; set; }
 
         public string Description { get; set; } = null!;
-
-
     }
+
 }

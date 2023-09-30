@@ -1,3 +1,4 @@
+using Backend.ChatLogic.BusinessLogic;
 using Database.Models;
 using Database.Services;
 using Database.Services.Interfaces;
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<ApplicationContext>();
 
 builder.Services.AddTransient<IFridgeService, FridgeService>();
 builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<IChatLogic, ChatLogicService>();
 
 
 var app = builder.Build();
