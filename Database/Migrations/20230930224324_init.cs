@@ -15,12 +15,12 @@ namespace Database.Migrations
                 name: "Conversations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    User1Id = table.Column<int>(type: "INTEGER", nullable: false),
-                    User2Id = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsSeenUser1 = table.Column<bool>(type: "INTEGER", nullable: false),
-                    IsSeenUser2 = table.Column<bool>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    User1Id = table.Column<int>(type: "int", nullable: false),
+                    User2Id = table.Column<int>(type: "int", nullable: false),
+                    IsSeenUser1 = table.Column<bool>(type: "bit", nullable: false),
+                    IsSeenUser2 = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,9 +31,9 @@ namespace Database.Migrations
                 name: "Fridges",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,10 +44,10 @@ namespace Database.Migrations
                 name: "ProductDictionary",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    IsConfirmed = table.Column<bool>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsConfirmed = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -58,13 +58,13 @@ namespace Database.Migrations
                 name: "Messages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    SenderId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ReceiverId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Text = table.Column<string>(type: "TEXT", nullable: false),
-                    ConversationId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SenderId = table.Column<int>(type: "int", nullable: false),
+                    ReceiverId = table.Column<int>(type: "int", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConversationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,15 +81,15 @@ namespace Database.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    ExpirationDate = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    FridgeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Weight = table.Column<int>(type: "INTEGER", nullable: true),
-                    Calories = table.Column<int>(type: "INTEGER", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    ExpirationDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FridgeId = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<int>(type: "int", nullable: true),
+                    Calories = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -106,12 +106,12 @@ namespace Database.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Username = table.Column<string>(type: "TEXT", nullable: false),
-                    Password = table.Column<string>(type: "TEXT", nullable: true),
-                    Email = table.Column<string>(type: "TEXT", nullable: true),
-                    FridgeId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FridgeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -128,17 +128,17 @@ namespace Database.Migrations
                 name: "Giveaways",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    AuthorId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ExpirationDate = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Latitude = table.Column<double>(type: "REAL", nullable: false),
-                    Longitude = table.Column<double>(type: "REAL", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ProductId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ReceiverId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Amount = table.Column<int>(type: "INTEGER", nullable: true),
-                    Description = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AuthorId = table.Column<int>(type: "int", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ReceiverId = table.Column<int>(type: "int", nullable: true),
+                    Amount = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -147,20 +147,17 @@ namespace Database.Migrations
                         name: "FK_Giveaways_ProductDictionary_ProductId",
                         column: x => x.ProductId,
                         principalTable: "ProductDictionary",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Giveaways_Users_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Giveaways_Users_ReceiverId",
                         column: x => x.ReceiverId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
