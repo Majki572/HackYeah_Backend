@@ -15,19 +15,19 @@ public class UserController : ControllerBase
         _chatLogic = chatLogic;
     }
 
-    [HttpGet("/{userId:int}/chat")]
+    [HttpGet("{userId:int}/chat")]
     public ChatInfoDTO GetChatInfo([FromRoute] int userId)
     {
         return _chatLogic.GetChatInfo(userId);
     }
 
-    [HttpGet("/{userId:int}/chat/{chatId:int}")]
+    [HttpGet("{userId:int}/chat/{chatId:int}")]
     public ConversationDTO GetConversation([FromRoute] int userId, [FromRoute] int chatId)
     {
         return _chatLogic.GetConversation(userId, chatId);
     }
 
-    [HttpPost("/user/{userId:int}/chat/{chatId:int}")]
+    [HttpPost("user/{userId:int}/chat/{chatId:int}")]
     public ActionResult SendMessage([FromRoute] int userId, [FromRoute] int chatId,
         [FromBody] SendMessageDTO sendMessageDto)
     {
@@ -35,7 +35,7 @@ public class UserController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("/user/{userId:int}/chat/{chatId:int}/mark")]
+    [HttpPost("user/{userId:int}/chat/{chatId:int}/mark")]
     public ActionResult MarkAsSeen([FromRoute] int userId, [FromRoute] int chatId)
     {
         _chatLogic.MarkAsSeen(userId, chatId);
