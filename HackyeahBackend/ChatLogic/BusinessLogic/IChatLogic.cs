@@ -1,4 +1,4 @@
-﻿using BackendApp.ChatLogic.DTO;
+﻿using Backend.ChatLogic.DTO;
 
 namespace Backend.ChatLogic.BusinessLogic;
 

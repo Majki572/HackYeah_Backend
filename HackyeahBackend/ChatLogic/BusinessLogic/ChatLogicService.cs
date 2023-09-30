@@ -1,6 +1,5 @@
-﻿using BackendApp.ChatLogic.DTO;
+﻿using Backend.ChatLogic.DTO;
 using Database.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Backend.ChatLogic.BusinessLogic;
 
