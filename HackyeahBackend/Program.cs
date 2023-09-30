@@ -1,8 +1,6 @@
-using Backend.ChatLogic.BusinessLogic;
 using Database.Models;
 using Database.Services;
 using Database.Services.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationContext>();
 
 builder.Services.AddTransient<IFridgeService, FridgeService>();
+builder.Services.AddTransient<IProductService, ProductService>();
 
 
 var app = builder.Build();

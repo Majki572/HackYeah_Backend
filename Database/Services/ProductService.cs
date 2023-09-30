@@ -37,7 +37,7 @@ public class ProductService : IProductService
         return response;
     }
 
-    public async Task<BackendResponse> GetProductsFromFridge(int fridgeId)
+    public async Task<BackendResponse> GetProductsFromFridgeById(int fridgeId)
     {
         var response = new BackendResponse();
         if (fridgeId <= 0)
@@ -75,6 +75,67 @@ public class ProductService : IProductService
         }
 
         var result = _context.Products.Remove(product);
+        await _context.SaveChangesAsync();
+
+        return response;
+    }
+
+    public async Task<BackendResponse> GetProductById(int productId)
+    {
+        BackendResponse backendResponse = new BackendResponse();
+        if (productId <= 0)
+        {
+            string errorMessage = "Product id must be greater than zero.";
+            backendResponse.Error.Message = errorMessage;
+            return backendResponse;
+        }
+
+        var result = await _context.Products.FindAsync(productId);
+
+        backendResponse.Product = result;
+
+        return backendResponse;
+    }
+
+    public async Task<BackendResponse> GetProductsDictionary()
+    {
+        BackendResponse backendResponse = new BackendResponse();
+
+        var result = await _context.ProductDictionary.ToListAsync();
+
+        backendResponse.ProductDictionary = result;
+
+        return backendResponse;
+    }
+
+    public async Task<BackendResponse> UpdateProduct(int userId, int fridgeId, int productId, ProductFridge product)
+    {
+        var response = new BackendResponse();
+        if (userId != fridgeId)
+        {
+            response.Error.Message = "User id and fridge id does not match.";
+            return response;
+        }
+        if (product.Id != productId)
+        {
+            response.Error.Message = "Provided product id and product id does not match.";
+            return response;
+        }
+        if (productId <= 0 || fridgeId <= 0 || userId <= 0)
+        {
+            string errorMessage = "Id must be greater than zero.";
+            response.Error.Message = errorMessage;
+            return response;
+        }
+
+        var result = await _context.Products.FindAsync(productId);
+        if (result == null)
+        {
+            response.Error.Message = "Product does not exist";
+            return response;
+        }
+
+        _context.Products.Update(product);
         await _context.SaveChangesAsync();
 
         return response;

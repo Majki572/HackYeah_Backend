@@ -26,6 +26,7 @@ public class ApplicationContext : DbContext
     public DbSet<ProductFridge> Products { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Giveaway> Giveaways { get; set; }
+    public DbSet<ProductDictionary> ProductDictionary { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
