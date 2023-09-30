@@ -3,7 +3,6 @@ using System;
 using Database.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,11 +10,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230930174533_quantityforproducts")]
-    partial class quantityforproducts
+    partial class ApplicationContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.11");
@@ -26,6 +23,12 @@ namespace Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsSeenUser1")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsSeenUser2")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("User1Id")
                         .HasColumnType("INTEGER");
 
@@ -34,7 +37,7 @@ namespace Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Conversation");
+                    b.ToTable("Conversations");
                 });
 
             modelBuilder.Entity("Database.Models.Fridge", b =>
@@ -74,6 +77,12 @@ namespace Database.Migrations
                     b.Property<DateTime?>("ExpirationDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<double>("Latitude")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("REAL");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
@@ -94,6 +103,10 @@ namespace Database.Migrations
             modelBuilder.Entity("Database.Models.Message", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ConversationId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ReceiverId")
@@ -111,7 +124,9 @@ namespace Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Message");
+                    b.HasIndex("ConversationId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Database.Models.ProductDictionary", b =>
@@ -203,7 +218,7 @@ namespace Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Database.Models.ProductFridge", "Product")
+                    b.HasOne("Database.Models.ProductDictionary", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -226,7 +241,7 @@ namespace Database.Migrations
                 {
                     b.HasOne("Database.Models.Conversation", "Conversation")
                         .WithMany("Messages")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("ConversationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

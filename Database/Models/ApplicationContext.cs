@@ -52,7 +52,8 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<Conversation>()
             .HasMany(e => e.Messages)
             .WithOne(e => e.Conversation)
-            .HasForeignKey(e => e.Id);
+            .HasForeignKey(e => e.ConversationId)
+            .HasPrincipalKey(e => e.Id);
 
         modelBuilder.Entity<Message>()
             .HasOne(e => e.Conversation)

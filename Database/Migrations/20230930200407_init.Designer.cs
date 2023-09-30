@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230930181430_quantityforproductshaha")]
-    partial class quantityforproductshaha
+    [Migration("20230930200407_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,6 +80,12 @@ namespace Database.Migrations
                     b.Property<DateTime?>("ExpirationDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<double>("Latitude")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("REAL");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
@@ -100,6 +106,10 @@ namespace Database.Migrations
             modelBuilder.Entity("Database.Models.Message", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ConversationId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ReceiverId")
@@ -116,6 +126,8 @@ namespace Database.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
 
                     b.ToTable("Messages");
                 });
@@ -209,7 +221,7 @@ namespace Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Database.Models.ProductFridge", "Product")
+                    b.HasOne("Database.Models.ProductDictionary", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -232,7 +244,7 @@ namespace Database.Migrations
                 {
                     b.HasOne("Database.Models.Conversation", "Conversation")
                         .WithMany("Messages")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("ConversationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
