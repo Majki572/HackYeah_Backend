@@ -13,6 +13,11 @@ namespace Backend.DTO
         public int? Amount { get; set; }
         public string Description { get; set; }
 
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
+
         // Constructor to initialize the DTO from a Giveaway entity
         public GiveawayDTO(Giveaway giveaway)
         {
@@ -23,6 +28,8 @@ namespace Backend.DTO
             ProductName = giveaway.Product.Name;
             Amount = giveaway.Amount;
             Description = giveaway.Description;
+            Longitude = giveaway.Longitude;
+            Latitude = giveaway.Latitude;
         }
 
         // Cast giveawayDTO to Giveaway
@@ -35,6 +42,8 @@ namespace Backend.DTO
                 Amount = giveawayDTO.Amount,
                 Description = giveawayDTO.Description,
                 AuthorId = giveawayDTO.AuthorId,
+                Latitude = giveawayDTO.Latitude,
+                Longitude = giveawayDTO.Longitude,
             };
         }   
     }

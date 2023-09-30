@@ -1,5 +1,6 @@
 ﻿using Database.Models;
 using Database.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +74,8 @@ public class GiveawayService
 
         var result = await _context.Giveaways.FindAsync(giveawayId);
 
+        _context.Entry(result).Reference(r => r.Author).Load();
+
         if (result == null)
         {
             backendResponse.Error = new ErrorMessage();
@@ -89,7 +92,7 @@ public class GiveawayService
 
         try
         {
-            var result = _context.Giveaways.ToList();
+            var result = _context.Giveaways.Include(g => g.Author).Include(g => g.Product).ToList();
 
             backendResponse.Giveaways = result.Where(g => CalculateDistance(coordinates, new Coordinates(g.Latitude, g.Longitude)) < maxDistance).ToList();
         }
@@ -109,7 +112,7 @@ public class GiveawayService
 
         try
         {
-            var result = _context.Giveaways.ToList();
+            var result = _context.Giveaways.Include(g => g.Author).Include(g => g.Product).ToList();
             backendResponse.Giveaways = result;
         }
         catch (Exception e)
