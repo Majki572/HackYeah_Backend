@@ -28,6 +28,7 @@ public class FridgeService : IFridgeService
         }
 
         await _context.Fridges.AddAsync(fridge);
+        await _context.SaveChangesAsync();
 
         return backendResponse;
     }
@@ -43,6 +44,8 @@ public class FridgeService : IFridgeService
         }
 
         var result = await _context.Fridges.FindAsync(fridgeId);
+        await _context.SaveChangesAsync();
+
         backendResponse.Fridge = result;
 
         return backendResponse;
