@@ -14,5 +14,9 @@ public class User
     public double Longitude { get; set; }
     public string? Email { get; set; }
     public Fridge Fridge { get; set; }
+
+    public List<Giveaway> GiveawaysAuthor { get; set; }
+
+    public List<Giveaway> GiveawaysReceiver { get; set; }
 }
 
