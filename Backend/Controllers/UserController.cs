@@ -21,6 +21,24 @@ public class UserController : ControllerBase
         _applicationContext = applicationContext;
     }
 
+    [HttpGet("login")]
+    public ActionResult<UserDTO> Login([FromBody] LoginDTO loginDto)
+    {
+        var user = _applicationContext.Users.FirstOrDefault(x => x.Username == loginDto.Username);
+        if (user is null)
+            return BadRequest("User with given username does not exist");
+
+        if (!Utils.IsPasswordEqualHash(loginDto.Password, user.Password))
+            return BadRequest("Incorrect password");
+
+        return Ok(new UserDTO
+        {
+            Id = user.Id,
+            UserName = user.Username,
+            FridgeId = user.Fridge.Id
+        });
+    }
+    
     [HttpGet("{userId:int}")]
     public UserDTO GetUser([FromRoute] int userId)
     {
@@ -31,7 +49,8 @@ public class UserController : ControllerBase
         return new UserDTO
         {
             Id = user.Id,
-            UserName = user.Username
+            UserName = user.Username,
+            FridgeId = user.Fridge.Id
         };
     }
 
