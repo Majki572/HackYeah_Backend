@@ -1,9 +1,18 @@
 ﻿using BackendApp.ChatLogic.DTO;
+using Database.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendApp.ChatLogic.BusinessLogic;
 
 public class ChatLogicService : IChatLogic
 {
+    private readonly ApplicationContext _applicationContext;
+
+    public ChatLogicService(ApplicationContext applicationContext)
+    {
+        _applicationContext = applicationContext;
+    }
+
     public ChatInfoDTO GetChatInfo(int userId)
     {
         return new ChatInfoDTO
