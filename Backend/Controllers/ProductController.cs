@@ -22,7 +22,7 @@ public class ProductController : ControllerBase
     {
         var result = await _productService.AddProductToFridge(product, userId, fridgeId);
 
-        if (result.Error == null)
+        if (result.Error.Message == null)
         {
             return CreatedAtAction("GetProductById", new { id = fridgeId }, product);
         }
@@ -36,7 +36,7 @@ public class ProductController : ControllerBase
     {
         var result = await _productService.GetProductById(productId);
 
-        if (result.Error == null)
+        if (result.Error.Message == null)
         {
             return Ok(result.Product);
         }
@@ -50,7 +50,7 @@ public class ProductController : ControllerBase
     {
         var result = await _productService.GetProductsFromFridgeById(fridgeId);
 
-        if (result.Error == null)
+        if (result.Error.Message == null)
         {
             return Ok(result.Products);
         }
@@ -64,7 +64,7 @@ public class ProductController : ControllerBase
     {
         var result = await _productService.GetProductsDictionary();
 
-        if (result.Error == null)
+        if (result.Error.Message == null)
         {
             return Ok(result.ProductDictionary);
         }
@@ -78,7 +78,7 @@ public class ProductController : ControllerBase
     {
         var result = await _productService.UpdateProduct(userId, fridgeId, productId, product);
 
-        if (result.Error == null)
+        if (result.Error.Message == null)
         {
             return CreatedAtAction("GetProductById", new { id = fridgeId }, product);
         }
