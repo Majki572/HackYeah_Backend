@@ -15,7 +15,7 @@ public class BackendResponse
     public ErrorMessage Error { get; set; }
     public List<Giveaway> Giveaways { get; set;}
 
-    public Giveaway Giveaway { get; set }
+    public Giveaway Giveaway { get; set; }
 }
 
 public class ErrorMessage
