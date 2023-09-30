@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 namespace Database.Models;
 public class ApplicationContext : DbContext
 {
-    //private readonly IConfiguration _configuration;
+    private readonly IConfiguration _configuration;
     //public FridgeContext(DbContextOptions<FridgeContext> options) : base(options) { }
-    //public FridgeContext(IConfiguration configuration) 
-    //{
-    //    _configuration = configuration;
-    //}
+    public ApplicationContext(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options) 
-        => options.UseSqlite("Data Source=../Database/Database/DBsql.db");
+        => options.UseSqlServer(_configuration.GetConnectionString("DatabaseConnectionString"));
 
 
     public DbSet<Fridge> Fridges { get; set; }
@@ -41,17 +41,20 @@ public class ApplicationContext : DbContext
         modelBuilder.Entity<Giveaway>()
             .HasOne(e => e.Author)
             .WithMany(e => e.GiveawaysAuthor)
-            .HasForeignKey(e => e.AuthorId);
+            .HasForeignKey(e => e.AuthorId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<Giveaway>()
             .HasOne(e => e.Receiver)
             .WithMany(e => e.GiveawaysReceiver)
-            .HasForeignKey(e => e.ReceiverId);
+            .HasForeignKey(e => e.ReceiverId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<Giveaway>()
             .HasOne(e => e.Product)
             .WithMany(p => p.Giveaways)
-            .HasForeignKey(e => e.ProductId);
+            .HasForeignKey(e => e.ProductId)
+            .OnDelete(DeleteBehavior.NoAction);
 
 
         modelBuilder.Entity<Conversation>()

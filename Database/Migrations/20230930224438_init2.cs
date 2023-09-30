@@ -5,7 +5,7 @@
 namespace Database.Migrations
 {
     /// <inheritdoc />
-    public partial class UserFridgeMigration : Migration
+    public partial class init2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
