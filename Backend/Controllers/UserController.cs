@@ -35,7 +35,7 @@ public class UserController : ControllerBase
         {
             Id = user.Id,
             UserName = user.Username,
-            FridgeId = user.Fridge.Id
+            FridgeId = user.FridgeId
         });
     }
     
@@ -50,7 +50,7 @@ public class UserController : ControllerBase
         {
             Id = user.Id,
             UserName = user.Username,
-            FridgeId = user.Fridge.Id
+            FridgeId = user.FridgeId
         };
     }
 

@@ -7,7 +7,7 @@ public static class Utils
 {
     public static string Hash(string password)
     {
-        using var sha = new HMACSHA256();
+        using var sha = new HMACSHA256(Encoding.UTF8.GetBytes("itwillbechanged"));
         
         byte[] textBytes = Encoding.UTF8.GetBytes(password);
         byte[] hashBytes = sha.ComputeHash(textBytes);
