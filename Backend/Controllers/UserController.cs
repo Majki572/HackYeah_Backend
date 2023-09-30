@@ -1,5 +1,9 @@
-﻿using Backend.ChatLogic.BusinessLogic;
+﻿using System.Security.Cryptography;
+using System.Text;
+using Backend.ChatLogic.BusinessLogic;
 using Backend.ChatLogic.DTO;
+using Backend.DTO;
+using Database.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers;
@@ -9,10 +13,52 @@ namespace Backend.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IChatLogic _chatLogic;
-
-    public UserController(IChatLogic chatLogic)
+    private readonly ApplicationContext _applicationContext;
+    
+    public UserController(IChatLogic chatLogic, ApplicationContext applicationContext)
     {
         _chatLogic = chatLogic;
+        _applicationContext = applicationContext;
+    }
+
+    [HttpGet("{userId:int}")]
+    public UserDTO GetUser([FromRoute] int userId)
+    {
+        var user = _applicationContext.Users.Find(userId);
+        if (user is null)
+            return null;
+
+        return new UserDTO
+        {
+            Id = user.Id,
+            UserName = user.Username
+        };
+    }
+
+    [HttpPost]
+    public ActionResult CreateUser([FromBody] CreateUserDTO createUserDto)
+    {
+        var isUsernameAvailable =
+            _applicationContext.Users.FirstOrDefault(x => x.Username == createUserDto.Username) is null;
+
+        if (!isUsernameAvailable)
+            return BadRequest("User with given username already exist.");
+
+        var user = new User
+        {
+            Username = createUserDto.Username,
+            Email = createUserDto.Email,
+            Password = Utils.Hash(createUserDto.Password),
+            Fridge = new Fridge()
+            {
+                Name = Guid.NewGuid().ToString(),
+            }
+        };
+
+        _applicationContext.Users.Add(user);
+        _applicationContext.SaveChanges();
+        
+        return Ok(user.Id);
     }
 
     [HttpGet("{userId:int}/chat")]
