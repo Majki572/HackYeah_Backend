@@ -75,6 +75,7 @@ public class GiveawayService
 
         if (result == null)
         {
+            backendResponse.Error = new ErrorMessage();
             backendResponse.Error.Message = "Not found";
         }
         backendResponse.Giveaway = result;
