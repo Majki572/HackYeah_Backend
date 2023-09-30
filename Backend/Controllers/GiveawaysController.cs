@@ -34,7 +34,7 @@ namespace Backend.Controllers
             {
                 var result = await giveawayService.GetGiveaways(coordinates, (double)maxDistance);
 
-                if (result.Error.Message == null)
+                if (result.Error == null)
                 {
                     return Ok(result.Giveaways.Select(g => new GiveawayDTO(g)));
                 }
@@ -47,7 +47,7 @@ namespace Backend.Controllers
             {
                 var result = await giveawayService.GetGiveaways();
 
-                if(result.Error.Message == null)
+                if(result.Error == null)
                 {
                     return Ok(result.Giveaways.Select(g => new GiveawayDTO(g)));
                 }
@@ -114,7 +114,7 @@ namespace Backend.Controllers
         {
             var result = await giveawayService.CreateGiveaway((Giveaway)giveaway);
 
-            if(result.Error.Message == null)
+            if(result.Error == null)
             {
                 return Ok(new GiveawayDTO(result.Giveaway));
             }
