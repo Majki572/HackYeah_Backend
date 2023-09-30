@@ -1,6 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendApp", "BackendApp\BackendApp.csproj", "{A99347F9-0841-467B-BD85-B9DB1FB189FC}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendApp", "BackendApp\BackendApp.csproj", "{A99347F9-0841-467B-BD85-B9DB1FB189FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{C7306B3F-8750-41A2-B116-EC5A9F174C6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +17,15 @@ Global
 		{A99347F9-0841-467B-BD85-B9DB1FB189FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A99347F9-0841-467B-BD85-B9DB1FB189FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A99347F9-0841-467B-BD85-B9DB1FB189FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7306B3F-8750-41A2-B116-EC5A9F174C6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7306B3F-8750-41A2-B116-EC5A9F174C6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7306B3F-8750-41A2-B116-EC5A9F174C6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7306B3F-8750-41A2-B116-EC5A9F174C6A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B8CB82C8-674B-4448-AD55-3799878A3D3A}
 	EndGlobalSection
 EndGlobal
