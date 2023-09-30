@@ -34,7 +34,7 @@ namespace Backend.Controllers
             {
                 var result = await giveawayService.GetGiveaways(coordinates, (double)maxDistance);
 
-                if (result.Error == null)
+                if (result.Error.Message == null)
                 {
                     return Ok(result.Giveaways);
                 }
@@ -47,7 +47,7 @@ namespace Backend.Controllers
             {
                 var result = await giveawayService.GetGiveaways();
 
-                if(result.Error == null)
+                if(result.Error.Message == null)
                 {
                     return Ok(result.Giveaways);
                 }
