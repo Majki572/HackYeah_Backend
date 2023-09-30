@@ -477,7 +477,3 @@ $RECYCLE.BIN/
 *.lnk
 
 .idea
-
-*.db-shm
-*.db-wal
-*Migrations*
