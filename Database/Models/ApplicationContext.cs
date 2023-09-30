@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Database.Models;
-public class FridgeContext : DbContext
+public class ApplicationContext : DbContext
 {
     //private readonly IConfiguration _configuration;
     //public FridgeContext(DbContextOptions<FridgeContext> options) : base(options) { }

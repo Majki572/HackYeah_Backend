@@ -10,9 +10,9 @@ namespace Database.Services;
 
 public class FridgeService : IFridgeService
 {
-    public readonly FridgeContext _context;
+    public readonly ApplicationContext _context;
     
-    public FridgeService(FridgeContext context)
+    public FridgeService(ApplicationContext context)
     {
         _context = context;
     }

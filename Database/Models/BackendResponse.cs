@@ -10,6 +10,8 @@ public class BackendResponse
 {
     public Fridge Fridge {  get; set; }
     public User User { get; set; }
+    public Product Product { get; set; }
+    public List<Product> Products { get; set; }
     public ErrorMessage Error { get; set; }
 }
 

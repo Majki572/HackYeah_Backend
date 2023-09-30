@@ -4,7 +4,7 @@ using Database.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<FridgeContext>();
+builder.Services.AddDbContext<ApplicationContext>();
 
 var app= WebApplication.CreateBuilder().Build();
 var Configuration = app.Configuration;
