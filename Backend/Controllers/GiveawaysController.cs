@@ -114,7 +114,7 @@ namespace Backend.Controllers
         {
             var result = await giveawayService.CreateGiveaway((Giveaway)giveaway);
 
-            if(result.Error == null)
+            if(result.Error.Message == null)
             {
                 return Ok(result.Giveaway);
             }
