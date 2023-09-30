@@ -14,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationContext>();
 
-//builder.Services.AddTransient<IFridgeService, FridgeService>(provider => new ChatLogicService(provider.GetService()));
+builder.Services.AddTransient<IFridgeService, FridgeService>();
 
 
 var app = builder.Build();

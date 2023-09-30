@@ -19,18 +19,25 @@ public class FridgeService : IFridgeService
 
     public async Task<BackendResponse> CreateFridge(Fridge fridge, int userID)
     {
-        BackendResponse backendResponse = new BackendResponse();
-        if(fridge == null || userID <= 0)
+        BackendResponse response = new BackendResponse();
+        var dbFridge = await _context.Products.FindAsync(fridge.Id);
+        if (dbFridge != null)
+        {
+            response.Error.Message = "Fridge with that id already exists.";
+            return response;
+        }
+
+        if (fridge == null || userID <= 0)
         {
             string errorMessage = "Fridge must be not null and user id must be greater than zero.";
-            backendResponse.Error.Message = errorMessage;
-            return backendResponse;
+            response.Error.Message = errorMessage;
+            return response;
         }
 
         await _context.Fridges.AddAsync(fridge);
         await _context.SaveChangesAsync();
 
-        return backendResponse;
+        return response;
     }
 
     public async Task<BackendResponse> GetFridgeById(int fridgeId)

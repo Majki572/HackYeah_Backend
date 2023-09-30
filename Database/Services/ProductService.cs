@@ -19,6 +19,13 @@ public class ProductService : IProductService
     public async Task<BackendResponse> AddProductToFridge(ProductFridge product, int userId, int fridgeId)
     {
         var response = new BackendResponse();
+        var dbProduct = await _context.Products.FindAsync(product.Id);
+        if (dbProduct != null)
+        {
+            response.Error.Message = "Product with that id already exists.";
+            return response;
+        }
+
         if(userId != fridgeId)
         {
             response.Error.Message = "User id and fridge id does not match.";

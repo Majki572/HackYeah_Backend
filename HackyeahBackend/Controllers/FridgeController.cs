@@ -21,7 +21,7 @@ public class FridgeController : ControllerBase
     {
         var result = await _fridgeService.CreateFridge(fridge, userId);
 
-        if(result.Error != null)
+        if(result.Error == null)
         {
             return CreatedAtAction("GetFridgeById", new { id = fridge.Id }, fridge);
         }
@@ -35,7 +35,7 @@ public class FridgeController : ControllerBase
     {
         var result = await _fridgeService.GetFridgeById(fridgeId);
 
-        if (result.Error != null)
+        if (result.Error == null)
         {
             return Ok(result.Fridge);
         }
