@@ -25,6 +25,7 @@ public class ApplicationContext : DbContext
     public DbSet<Fridge> Fridges { get; set; }
     public DbSet<ProductFridge> Products { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Giveaway> Giveaways { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -33,6 +34,19 @@ public class ApplicationContext : DbContext
             .WithOne(e => e.Fridge)
             .HasForeignKey(e => e.FridgeId)
             .HasPrincipalKey(e => e.Id);
+
+        modelBuilder.Entity<Giveaway>()
+            .HasOne(e => e.Author)
+            .WithMany(e => e.GiveawaysAuthor)
+            .HasForeignKey(e => e.AuthorId);
+
+        modelBuilder.Entity<Giveaway>()
+            .HasOne(e => e.Receiver)
+            .WithMany(e => e.GiveawaysReceiver)
+            .HasForeignKey(e => e.ReceiverId);
+
+
+            
     }
 
 }
