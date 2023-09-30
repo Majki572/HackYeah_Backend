@@ -17,12 +17,41 @@ public class GiveawayService
         _context = context;
     }
 
-    public async Task<BackendResponse> CreateGiveaway(Giveaway giveaway, int userID)
+    public async Task<BackendResponse> CreateGiveaway(Giveaway giveaway)
     {
         BackendResponse backendResponse = new BackendResponse();
+        var product = _context.ProductDictionary.Where(p => p.Name == giveaway.Product.Name).FirstOrDefault();
+        var author = _context.Users.Where(u => u.Id == giveaway.AuthorId).FirstOrDefault();
+        if (author == null)
+        {
+            backendResponse.Error.Message = "Author not found";
+            return backendResponse;
+        }
+        giveaway.Author = author;
+
+        if (product == null)
+        {
+            // create new product
+            product = new ProductDictionary();
+            product.Name = giveaway.Product.Name;
+            try
+            {
+                await _context.ProductDictionary.AddAsync(product);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                backendResponse = new BackendResponse();
+                backendResponse.Error.Message = ex.Message;
+                return backendResponse;
+            }
+        }
+        giveaway.Product = product;
         try
         {
             await _context.Giveaways.AddAsync(giveaway);
+            await _context.SaveChangesAsync();
+            backendResponse.Giveaway = giveaway;
         }
         catch (Exception ex)
         {

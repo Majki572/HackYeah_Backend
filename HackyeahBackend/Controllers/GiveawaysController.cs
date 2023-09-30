@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Database.Models;
 using System.Drawing.Drawing2D;
 using Database.Services;
-using Backend.DTO;
 
 namespace Backend.Controllers
 {
@@ -110,18 +109,16 @@ namespace Backend.Controllers
         // POST: api/Giveaways
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Giveaway>> PostGiveaway([FromQuery]NewGiveawayDTO giveaway)
+        public async Task<ActionResult<Giveaway>> PostGiveaway(GiveawayDTO giveaway)
         {
-            var result = await giveawayService.CreateGiveaway((Giveaway)giveaway);
-
-            if(result.Error == null)
+            if (_context.Giveaways == null)
             {
-                return Ok(result.Giveaway);
+                return Problem("Entity set 'ApplicationContext.Giveaways'  is null.");
             }
-            else
-            {
-                return BadRequest(result.Error.Message);
-            }   
+            _context.Giveaways.Add(giveaway);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetGiveaway", new { id = giveaway.Id }, giveaway);
         }
 
         // DELETE: api/Giveaways/5
