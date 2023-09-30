@@ -2,39 +2,48 @@
 
 namespace Backend.DTO
 {
-    public class GiveawayDTO
+    public class NewGiveawayDTO
     {
-        public int Id { get; set; }
         public int AuthorId { get; set; }
-        public string AuthorName { get; set; } // Add a property for author's name
         public DateTime? ExpirationDate { get; set; }
-        public DateTime CreateDate { get; set; }
         public string ProductName { get; set; }
         public int? Amount { get; set; }
         public string Description { get; set; }
 
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
+        public NewGiveawayDTO() { }
+
         // Constructor to initialize the DTO from a Giveaway entity
-        public GiveawayDTO(Giveaway giveaway)
+        public NewGiveawayDTO(Giveaway giveaway)
         {
-            Id = giveaway.Id;
-            AuthorName = giveaway.Author.Username; // Assuming Author has a Name property
             ExpirationDate = giveaway.ExpirationDate;
-            CreateDate = giveaway.CreateDate;
             ProductName = giveaway.Product.Name;
             Amount = giveaway.Amount;
             Description = giveaway.Description;
+            AuthorId = giveaway.AuthorId;
+            Latitude = giveaway.Latitude;
+            Longitude = giveaway.Longitude;
         }
 
         // Cast giveawayDTO to Giveaway
-        public static explicit operator Giveaway(GiveawayDTO giveawayDTO)
+        public static explicit operator Giveaway(NewGiveawayDTO giveawayDTO)
         {
             return new Giveaway
             {
                 ExpirationDate = giveawayDTO.ExpirationDate,
-                CreateDate = giveawayDTO.CreateDate,
+                CreateDate = DateTime.Now,
                 Amount = giveawayDTO.Amount,
                 Description = giveawayDTO.Description,
                 AuthorId = giveawayDTO.AuthorId,
+                Latitude = giveawayDTO.Latitude,
+                Longitude = giveawayDTO.Longitude,
+                Product = new ProductDictionary
+                {
+                    Name = giveawayDTO.ProductName
+                }
             };
         }   
     }

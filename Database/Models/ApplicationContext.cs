@@ -48,6 +48,11 @@ public class ApplicationContext : DbContext
             .WithMany(e => e.GiveawaysReceiver)
             .HasForeignKey(e => e.ReceiverId);
 
+        modelBuilder.Entity<Giveaway>()
+            .HasOne(e => e.Product)
+            .WithMany(p => p.Giveaways)
+            .HasForeignKey(e => e.ProductId);
+
 
         modelBuilder.Entity<Conversation>()
             .HasMany(e => e.Messages)

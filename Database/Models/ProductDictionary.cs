@@ -11,4 +11,6 @@ public class ProductDictionary
     public int Id { get; set; }
     public string Name { get; set; }
     public bool IsConfirmed { get; set; }
+
+    public List<Giveaway> Giveaways { get; set; }
 }

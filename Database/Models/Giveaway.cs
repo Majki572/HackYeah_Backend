@@ -26,7 +26,7 @@ namespace Database.Models
 
         public ProductDictionary Product { get; set; } = null!;
 
-        public int ReceiverId { get; set; }
+        public int? ReceiverId { get; set; }
 
         public User? Receiver { get; set; }
 
