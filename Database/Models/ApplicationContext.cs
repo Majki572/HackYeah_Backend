@@ -18,8 +18,6 @@ public class ApplicationContext : DbContext
     //    _configuration = configuration;
     //}
 
-    protected override void OnConfiguring(DbContextOptionsBuilder options) 
-        => options.UseSqlServer("Server=tcp:podzielsielodowkaserwer.database.windows.net,1433;Initial Catalog=podzielsielodowkabaza;Persist Security Info=False;User ID=adminhackyeah;Password=podzielsielodowka!2;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
 
     public DbSet<Fridge> Fridges { get; set; }
@@ -29,7 +27,7 @@ public class ApplicationContext : DbContext
     public DbSet<Conversation> Conversations { get; set; }
     public DbSet<Message> Messages { get; set; }
     public DbSet<ProductDictionary> ProductDictionary { get; set; }
-    
+    public DbSet<Meal> Meals { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Fridge>()

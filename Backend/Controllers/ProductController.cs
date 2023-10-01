@@ -1,4 +1,6 @@
-﻿using Database.Models;
+﻿using AutoMapper;
+using Backend.DTO;
+using Database.Models;
 using Database.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +12,14 @@ namespace Backend.Controllers;
 public class ProductController : ControllerBase
 {
     public readonly IProductService _productService;
-    public ProductController(IProductService fridgeService)
+    private readonly IMapper _mapper;
+
+    public ProductController(
+        IProductService fridgeService,
+        IMapper mapper)
     {
         _productService = fridgeService;
+        _mapper = mapper;
     }
 
     [HttpPost("AddProductToFridge")]
@@ -32,13 +39,13 @@ public class ProductController : ControllerBase
     [HttpGet("GetProductById")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductFridge))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<List<ProductFridge>>> GetProductById(int productId)
+    public async Task<ActionResult<List<ProductDTO>>> GetProductById(int productId)
     {
         var result = await _productService.GetProductById(productId);
 
         if (result.Error == null)
         {
-            return Ok(result.Product);
+            return Ok(_mapper.Map<ProductDTO>(result.Product));
         }
         return BadRequest(result.Error.Message);
     }
@@ -46,13 +53,18 @@ public class ProductController : ControllerBase
     [HttpGet("GetProductsFromFridgeById")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ProductFridge>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<List<ProductFridge>>> GetProductsFromFridgeById(int fridgeId)
+    public async Task<ActionResult<List<ProductDTO>>> GetProductsFromFridgeById(int fridgeId)
     {
         var result = await _productService.GetProductsFromFridgeById(fridgeId);
 
         if (result.Error == null)
         {
-            return Ok(result.Products);
+            var dtoList = new List<ProductDTO>();
+            foreach(var product in result.Products)
+            {
+                dtoList.Add(_mapper.Map<ProductDTO>(product));
+            }
+            return Ok(dtoList);
         }
         return BadRequest(result.Error.Message);
     }
@@ -74,7 +86,7 @@ public class ProductController : ControllerBase
     [HttpGet("UpdateProduct")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductFridge))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<List<ProductFridge>>> UpdateProduct([FromBody] ProductFridge product, int userId, int fridgeId, int productId)
+    public async Task<ActionResult<List<ProductDTO>>> UpdateProduct([FromBody] ProductFridge product, int userId, int fridgeId, int productId)
     {
         var result = await _productService.UpdateProduct(userId, fridgeId, productId, product);
 
