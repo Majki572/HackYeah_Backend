@@ -11,13 +11,15 @@ using System.Threading.Tasks;
 namespace Database.Models;
 public class ApplicationContext : DbContext
 {
-    //private readonly IConfiguration _configuration;
-    ////public FridgeContext(DbContextOptions<FridgeContext> options) : base(options) { }
-    //public ApplicationContext(IConfiguration configuration)
-    //{
-    //    _configuration = configuration;
-    //}
+    private readonly IConfiguration _configuration;
+    //public FridgeContext(DbContextOptions<FridgeContext> options) : base(options) { }
+    public ApplicationContext(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder options)
+    => options.UseSqlServer(_configuration.GetConnectionString("DatabaseConnectionString"));
 
 
     public DbSet<Fridge> Fridges { get; set; }
