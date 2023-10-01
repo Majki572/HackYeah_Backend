@@ -76,6 +76,21 @@ namespace Backend.Controllers
             return new GiveawayDTO(giveaway);
         }
 
+        [HttpGet("Claim")]
+        public async Task<ActionResult> ClaimGiveaway(int giveawayId, int userId)
+        {
+            var response = await giveawayService.ClaimGiveaway(giveawayId, userId);
+
+            if(response.Error == null)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(response.Error.Message);
+            }
+        }   
+
         // PUT: api/Giveaways/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
