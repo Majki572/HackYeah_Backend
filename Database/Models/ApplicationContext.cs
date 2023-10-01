@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 namespace Database.Models;
 public class ApplicationContext : DbContext
 {
-    private readonly IConfiguration _configuration;
-    //public FridgeContext(DbContextOptions<FridgeContext> options) : base(options) { }
-    public ApplicationContext(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    //private readonly IConfiguration _configuration;
+    ////public FridgeContext(DbContextOptions<FridgeContext> options) : base(options) { }
+    //public ApplicationContext(IConfiguration configuration)
+    //{
+    //    _configuration = configuration;
+    //}
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-    => options.UseSqlServer(_configuration.GetConnectionString("DatabaseConnectionString"));
+    => options.UseSqlServer("Server=tcp:podzielsielodowkaserwer.database.windows.net,1433;Initial Catalog=podzielsielodowkabaza;Persist Security Info=False;User ID=adminhackyeah;Password=podzielsielodowka!2;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
 
     public DbSet<Fridge> Fridges { get; set; }
