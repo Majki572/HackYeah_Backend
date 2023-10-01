@@ -41,11 +41,11 @@ public class ProductService : IProductService
         productFridge.Name = dictionaryProduct.Name;
 
 
-        if (userId != fridgeId)
-        {
-            response.ErrorMessage = "User id and fridge id does not match.";
-            return response;
-        }
+        //if (userId != fridgeId)
+        //{
+        //    response.ErrorMessage = "User id and fridge id does not match.";
+        //    return response;
+        //}
         await _context.Products.AddAsync(productFridge);
         await _context.SaveChangesAsync();
 
