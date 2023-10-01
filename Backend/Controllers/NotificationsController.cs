@@ -100,11 +100,13 @@ public class NotificationsController : ControllerBase
     private void GenerateNotificationsFromProducts(int userId)
     {
         var user = _applicationContext.Users.Find(userId);
+        _applicationContext.Entry(user).Reference(u => u.Fridge).Load();
+        _applicationContext.Entry(user.Fridge).Collection(f => f.Products).Load();
         if (user is null)
             return;
 
         foreach (var productForNotifications in user.Fridge.Products.Where(p =>
-                     (DateTime.Now - p.ExpirationDate).TotalDays < 2.0))
+                     (DateTime.Now - p.ExpirationDate).TotalDays < 3.0))
         {
             var notificationDateTime = productForNotifications.ExpirationDate.AddDays(-2);
             var notificationMessage = $"Your product {productForNotifications.Name} will expire in two days.";
@@ -113,7 +115,7 @@ public class NotificationsController : ControllerBase
                 n.UserId == userId && n._identity1 == notificationMessage &&
                 n._identity2 == $"{userId} {productForNotifications.Id}");
             
-            if (existingNotification is null)
+            if (existingNotification is not null)
                 continue;
 
             var notification = new Notification
