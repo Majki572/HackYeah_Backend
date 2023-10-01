@@ -15,9 +15,35 @@ public class NotificationsController : ControllerBase
         _applicationContext = applicationContext;
     }
 
+    [HttpPost("{id:int}/user/{userId:int}")]
+    public ActionResult MarkNotificationAsSeen([FromRoute] int id, [FromRoute] int userId)
+    {
+        var notification = _applicationContext.Notifications.FirstOrDefault(n => n.Id == id && n.UserId == userId);
+        if (notification is null)
+            return BadRequest("Notification with given id and userId does not exist.");
+
+        if (notification.IsSeen)
+            return Ok();
+
+        notification.IsSeen = true;
+        _applicationContext.Notifications.Update(notification);
+        _applicationContext.SaveChanges();
+
+        return Ok();
+    }
+
     [HttpGet]
     public ActionResult<IEnumerable<NotificationDTO>> GetNotifications([FromQuery] int userId)
     {
+        GenerateNotifications(userId);
+        return _applicationContext.Notifications.Where(n => n.UserId == userId).Select(n => new NotificationDTO
+        {
+            Id = n.Id,
+            Timestamp = n.Timestamp,
+            Text = n.Text,
+            IsSeen = n.IsSeen,
+            UrlToMarkAsSeen = $"/api/notifications/{n.Id}/user/{userId}"
+        }).OrderByDescending(ndto => ndto.Timestamp).ToList();
     }
 
     private void GenerateNotifications(int userId)
@@ -77,9 +103,31 @@ public class NotificationsController : ControllerBase
         if (user is null)
             return;
 
-        foreach (var productForNotifications in user.Fridge.Products.Where(p => (DateTime.Now - p.ExpirationDate).TotalDays < 1.0))
+        foreach (var productForNotifications in user.Fridge.Products.Where(p =>
+                     (DateTime.Now - p.ExpirationDate).TotalDays < 2.0))
         {
+            var notificationDateTime = productForNotifications.ExpirationDate.AddDays(-2);
+            var notificationMessage = $"Your product {productForNotifications.Name} will expire in two days.";
+
+            var existingNotification = _applicationContext.Notifications.FirstOrDefault(n =>
+                n.UserId == userId && n._identity1 == notificationMessage &&
+                n._identity2 == $"{userId} {productForNotifications.Id}");
             
+            if (existingNotification is null)
+                continue;
+
+            var notification = new Notification
+            {
+                UserId = userId,
+                Timestamp = notificationDateTime,
+                Text = notificationMessage,
+                IsSeen = false,
+                _identity1 = notificationMessage,
+                _identity2 = $"{userId} {productForNotifications.Id}"
+            };
+
+            _applicationContext.Notifications.Add(notification);
+            _applicationContext.SaveChanges();
         }
     }
 }
