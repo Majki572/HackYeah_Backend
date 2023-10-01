@@ -18,6 +18,62 @@ public class GiveawayService
         _context = context;
     }
 
+    public async Task<BackendResponse> ClaimGiveaway(int giveawayId, int claimerId)
+    {
+        BackendResponse backendResponse = new BackendResponse();
+
+        var giveawayFromDb = await _context.Giveaways.FindAsync(giveawayId);
+        if (giveawayFromDb == null)
+        {
+            backendResponse.Error = new ErrorMessage();
+            backendResponse.Error.Message = "Giveaway not found";
+            return backendResponse;
+        }
+
+        var claimer = await _context.Users.FindAsync(claimerId);
+        if (claimer == null)
+        {
+            backendResponse.Error = new ErrorMessage();
+            backendResponse.Error.Message = "User not found";
+            return backendResponse;
+        }
+
+        giveawayFromDb.Receiver = claimer;
+
+        try
+        {
+            _context.Giveaways.Update(giveawayFromDb);
+            await _context.SaveChangesAsync();
+            backendResponse.Giveaway = giveawayFromDb;
+        }
+        catch (Exception ex)
+        {
+            backendResponse.Error = new ErrorMessage();
+            backendResponse.Error.Message = ex.Message;
+        }
+
+        Conversation conversation = new Conversation()
+        {
+            User1Id = giveawayFromDb.AuthorId,
+            User2Id = claimerId
+        };
+
+        try
+        {
+            await _context.Conversations.AddAsync(conversation);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            backendResponse.Error = new ErrorMessage();
+            backendResponse.Error.Message = ex.Message;
+        }
+
+        return backendResponse;
+
+
+    }
+
     public async Task<BackendResponse> CreateGiveaway(Giveaway giveaway)
     {
         BackendResponse backendResponse = new BackendResponse();
@@ -25,6 +81,7 @@ public class GiveawayService
         var author = _context.Users.Where(u => u.Id == giveaway.AuthorId).FirstOrDefault();
         if (author == null)
         {
+            backendResponse.Error = new ErrorMessage();
             backendResponse.Error.Message = "Author not found";
             return backendResponse;
         }
