@@ -1,5 +1,8 @@
-﻿namespace Database.Models;
-public class ProductFridge
+﻿using Database.Models;
+
+namespace Backend.DTO;
+
+public class ProductDTO
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -7,8 +10,6 @@ public class ProductFridge
     public DateTime ExpirationDate { get; set; }
     public string Description { get; set; }
     public int FridgeId { get; set; }
-
-    public Fridge Fridge { get; set; }
     public int? Weight { get; set; }
     public int? Calories { get; set; }
 }

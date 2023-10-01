@@ -18,8 +18,8 @@ public class ApplicationContext : DbContext
         _configuration = configuration;
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder options) 
-        => options.UseSqlServer(_configuration.GetConnectionString("DatabaseConnectionString"));
+    protected override void OnConfiguring(DbContextOptionsBuilder options)
+    => options.UseSqlServer(_configuration.GetConnectionString("DatabaseConnectionString"));
 
 
     public DbSet<Fridge> Fridges { get; set; }
@@ -29,7 +29,7 @@ public class ApplicationContext : DbContext
     public DbSet<Conversation> Conversations { get; set; }
     public DbSet<Message> Messages { get; set; }
     public DbSet<ProductDictionary> ProductDictionary { get; set; }
-    
+    public DbSet<Meal> Meals { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Fridge>()
