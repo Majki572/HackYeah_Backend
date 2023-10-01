@@ -23,7 +23,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost("AddProductToFridge")]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProductFridge))]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProductDTO))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<Fridge>> AddProductToFridge([FromBody] ProductFridge product, int userId, int fridgeId)
     {
@@ -37,7 +37,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("GetProductById")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductFridge))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductDTO))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<List<ProductDTO>>> GetProductById(int productId)
     {
@@ -51,7 +51,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("GetProductsFromFridgeById")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ProductFridge>))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ProductDTO>))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<List<ProductDTO>>> GetProductsFromFridgeById(int fridgeId)
     {

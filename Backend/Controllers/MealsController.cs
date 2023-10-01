@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Database.Models;
+using AutoMapper;
+using Backend.DTO;
 
 namespace Backend.Controllers
 {
@@ -14,31 +16,41 @@ namespace Backend.Controllers
     public class MealsController : ControllerBase
     {
         private readonly ApplicationContext _context;
+        private readonly IMapper _mapper;
 
-        public MealsController(ApplicationContext context)
+        public MealsController(
+            ApplicationContext context,
+            IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Meals
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Meal>>> GetMeals()
+        public async Task<ActionResult<IEnumerable<MealDTO>>> GetMeals()
         {
-          if (_context.Meals == null)
-          {
-              return NotFound();
-          }
-            return await _context.Meals.ToListAsync();
+            if (_context.Meals == null)
+            {
+                return NotFound();
+            }
+            var dtoList = new List<MealDTO>();
+            var result = await _context.Meals.ToListAsync();
+            foreach (var item in result)
+            {
+                dtoList.Add(_mapper.Map<MealDTO>(item));
+            }
+            return dtoList;
         }
 
         // GET: api/Meals/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Meal>> GetMeal(int id)
+        public async Task<ActionResult<MealDTO>> GetMeal(int id)
         {
-          if (_context.Meals == null)
-          {
-              return NotFound();
-          }
+            if (_context.Meals == null)
+            {
+                return NotFound();
+            }
             var meal = await _context.Meals.FindAsync(id);
 
             if (meal == null)
@@ -46,7 +58,7 @@ namespace Backend.Controllers
                 return NotFound();
             }
 
-            return meal;
+            return _mapper.Map<MealDTO>(meal);
         }
 
         // PUT: api/Meals/5
@@ -83,16 +95,16 @@ namespace Backend.Controllers
         // POST: api/Meals
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Meal>> PostMeal(Meal meal)
+        public async Task<ActionResult<MealDTO>> PostMeal(Meal meal)
         {
-          if (_context.Meals == null)
-          {
-              return Problem("Entity set 'ApplicationContext.Meals'  is null.");
-          }
+            if (_context.Meals == null)
+            {
+                return Problem("Entity set 'ApplicationContext.Meals'  is null.");
+            }
             _context.Meals.Add(meal);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMeal", new { id = meal.Id }, meal);
+            return CreatedAtAction("GetMeal", new { id = meal.Id }, _mapper.Map<MealDTO>(meal));
         }
 
         // DELETE: api/Meals/5

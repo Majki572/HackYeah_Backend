@@ -10,6 +10,8 @@ public class MappingProfile : Profile
     {
         CreateMap<ProductFridge, ProductDTO>();
         CreateMap<ProductDTO, ProductFridge>();
+        CreateMap<MealDTO, Meal>();
+        CreateMap<Meal, MealDTO>();
     }
 
 }
