@@ -75,11 +75,11 @@ public class ProductService : IProductService
     public async Task<BackendResponse> RemoveProductFromFridge(ProductFridge product, int userId, int fridgeId)
     {
         var response = new BackendResponse();
-        if (userId != fridgeId)
-        {
-            response.ErrorMessage = "User id and fridge id does not match.";
-            return response;
-        }
+        //if (userId != fridgeId)
+        //{
+        //    response.ErrorMessage = "User id and fridge id does not match.";
+        //    return response;
+        //}
 
         var dbProduct = await _context.Products.FindAsync(product.Id);
 
@@ -126,11 +126,11 @@ public class ProductService : IProductService
     public async Task<BackendResponse> UpdateProduct(int userId, int fridgeId, int productId, ProductFridge product)
     {
         var response = new BackendResponse();
-        if (userId != fridgeId)
-        {
-            response.ErrorMessage = "User id and fridge id does not match.";
-            return response;
-        }
+        //if (userId != fridgeId)
+        //{
+        //    response.ErrorMessage = "User id and fridge id does not match.";
+        //    return response;
+        //}
         if (product.Id != productId)
         {
             response.ErrorMessage = "Provided product id and product id does not match.";
