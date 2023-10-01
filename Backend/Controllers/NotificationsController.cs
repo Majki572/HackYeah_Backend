@@ -61,6 +61,8 @@ public class NotificationsController : ControllerBase
 
         foreach (var chat in chats)
         {
+            if(chat.Messages is null || !chat.Messages.Any())
+                continue;
             var lastMessageReceiverId = chat.Messages.ToList()[chat.Messages.ToList().Count - 1].ReceiverId;
 
             if (lastMessageReceiverId != userId)
