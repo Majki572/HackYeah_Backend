@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Database.Migrations
 {
     /// <inheritdoc />
-    public partial class mealexchanges : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,6 +38,24 @@ namespace Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Fridges", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsSeen = table.Column<bool>(type: "bit", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    _identity1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    _identity2 = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,7 +103,7 @@ namespace Database.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    ExpirationDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FridgeId = table.Column<int>(type: "int", nullable: false),
                     Weight = table.Column<int>(type: "int", nullable: true),
@@ -160,6 +178,37 @@ namespace Database.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Meals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AuthorId = table.Column<int>(type: "int", nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ReceiverId = table.Column<int>(type: "int", nullable: true),
+                    GetMealDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    OfferMealDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Meals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Meals_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Meals_Users_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Giveaways_AuthorId",
                 table: "Giveaways",
@@ -173,6 +222,16 @@ namespace Database.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Giveaways_ReceiverId",
                 table: "Giveaways",
+                column: "ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Meals_AuthorId",
+                table: "Meals",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Meals_ReceiverId",
+                table: "Meals",
                 column: "ReceiverId");
 
             migrationBuilder.CreateIndex(
@@ -198,7 +257,13 @@ namespace Database.Migrations
                 name: "Giveaways");
 
             migrationBuilder.DropTable(
+                name: "Meals");
+
+            migrationBuilder.DropTable(
                 name: "Messages");
+
+            migrationBuilder.DropTable(
+                name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "Products");
