@@ -25,16 +25,14 @@ public class GiveawayService
         var giveawayFromDb = await _context.Giveaways.FindAsync(giveawayId);
         if (giveawayFromDb == null)
         {
-            backendResponse.Error = new ErrorMessage();
-            backendResponse.Error.Message = "Giveaway not found";
+            backendResponse.ErrorMessage = "Giveaway not found";
             return backendResponse;
         }
 
         var claimer = await _context.Users.FindAsync(claimerId);
         if (claimer == null)
         {
-            backendResponse.Error = new ErrorMessage();
-            backendResponse.Error.Message = "User not found";
+            backendResponse.ErrorMessage = "User not found";
             return backendResponse;
         }
 
@@ -48,8 +46,7 @@ public class GiveawayService
         }
         catch (Exception ex)
         {
-            backendResponse.Error = new ErrorMessage();
-            backendResponse.Error.Message = ex.Message;
+            backendResponse.ErrorMessage = ex.Message;
         }
 
         Conversation conversation = new Conversation()
@@ -65,8 +62,7 @@ public class GiveawayService
         }
         catch (Exception ex)
         {
-            backendResponse.Error = new ErrorMessage();
-            backendResponse.Error.Message = ex.Message;
+            backendResponse.ErrorMessage = ex.Message;
         }
 
         return backendResponse;
@@ -81,8 +77,7 @@ public class GiveawayService
         var author = _context.Users.Where(u => u.Id == giveaway.AuthorId).FirstOrDefault();
         if (author == null)
         {
-            backendResponse.Error = new ErrorMessage();
-            backendResponse.Error.Message = "Author not found";
+            backendResponse.ErrorMessage = "Author not found";
             return backendResponse;
         }
         giveaway.Author = author;
@@ -100,7 +95,7 @@ public class GiveawayService
             catch (Exception ex)
             {
                 backendResponse = new BackendResponse();
-                backendResponse.Error.Message = ex.Message;
+                backendResponse.ErrorMessage = ex.Message;
                 return backendResponse;
             }
         }
@@ -114,7 +109,7 @@ public class GiveawayService
         catch (Exception ex)
         {
             backendResponse = new BackendResponse();
-            backendResponse.Error.Message = ex.Message;
+            backendResponse.ErrorMessage = ex.Message;
         }
         return backendResponse;
     }
@@ -125,7 +120,7 @@ public class GiveawayService
         if (giveawayId <= 0)
         {
             string errorMessage = "Id must be greater than zero.";
-            backendResponse.Error.Message = errorMessage;
+            backendResponse.ErrorMessage = errorMessage;
             return backendResponse;
         }
 
@@ -135,8 +130,7 @@ public class GiveawayService
 
         if (result == null)
         {
-            backendResponse.Error = new ErrorMessage();
-            backendResponse.Error.Message = "Not found";
+            backendResponse.ErrorMessage = "Not found";
         }
         backendResponse.Giveaway = result;
 
@@ -155,8 +149,7 @@ public class GiveawayService
         }
         catch (Exception e)
         {
-            backendResponse.Error = new ErrorMessage();
-            backendResponse.Error.Message = e.Message;
+            backendResponse.ErrorMessage = e.Message;
         }
 
 
@@ -174,8 +167,7 @@ public class GiveawayService
         }
         catch (Exception e)
         {
-            backendResponse.Error = new ErrorMessage();
-            backendResponse.Error.Message = e.Message;
+            backendResponse.ErrorMessage = e.Message;
         }
 
 

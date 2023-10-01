@@ -23,14 +23,14 @@ public class FridgeService : IFridgeService
         var dbFridge = await _context.Products.FindAsync(fridge.Id);
         if (dbFridge != null)
         {
-            response.Error.Message = "Fridge with that id already exists.";
+            response.ErrorMessage = "Fridge with that id already exists.";
             return response;
         }
 
         if (fridge == null || userID <= 0)
         {
             string errorMessage = "Fridge must be not null and user id must be greater than zero.";
-            response.Error.Message = errorMessage;
+            response.ErrorMessage = errorMessage;
             return response;
         }
 
@@ -46,7 +46,7 @@ public class FridgeService : IFridgeService
         if (fridgeId <= 0)
         {
             string errorMessage = "Fridge id must be greater than zero.";
-            backendResponse.Error.Message = errorMessage;
+            backendResponse.ErrorMessage = errorMessage;
             return backendResponse;
         }
 

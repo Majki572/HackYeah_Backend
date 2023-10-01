@@ -34,26 +34,26 @@ namespace Backend.Controllers
             {
                 var result = await giveawayService.GetGiveaways(coordinates, (double)maxDistance);
 
-                if (result.Error == null)
+                if (result.ErrorMessage == null)
                 {
                     return Ok(result.Giveaways.Select(g => new GiveawayDTO(g)));
                 }
                 else
                 {
-                    return BadRequest(result.Error);
+                    return BadRequest(result.ErrorMessage);
                 }
             }
             else
             {
                 var result = await giveawayService.GetGiveaways();
 
-                if(result.Error == null)
+                if(result.ErrorMessage == null)
                 {
                     return Ok(result.Giveaways.Select(g => new GiveawayDTO(g)));
                 }
                 else
                 {
-                    return BadRequest(result.Error);
+                    return BadRequest(result.ErrorMessage);
                 }
             }
         }
@@ -81,13 +81,13 @@ namespace Backend.Controllers
         {
             var response = await giveawayService.ClaimGiveaway(giveawayId, userId);
 
-            if(response.Error == null)
+            if(response.ErrorMessage == null)
             {
                 return Ok();
             }
             else
             {
-                return BadRequest(response.Error.Message);
+                return BadRequest(response.ErrorMessage);
             }
         }   
 
@@ -129,13 +129,13 @@ namespace Backend.Controllers
         {
             var result = await giveawayService.CreateGiveaway((Giveaway)giveaway);
 
-            if(result.Error == null)
+            if(result.ErrorMessage == null)
             {
                 return Ok(new GiveawayDTO(result.Giveaway));
             }
             else
             {
-                return BadRequest(result.Error.Message);
+                return BadRequest(result.ErrorMessage);
             }   
         }
 

@@ -21,11 +21,11 @@ public class FridgeController : ControllerBase
     {
         var result = await _fridgeService.CreateFridge(fridge, userId);
 
-        if(result.Error == null)
+        if(result.ErrorMessage == null)
         {
             return CreatedAtAction("GetFridgeById", new { id = fridge.Id }, fridge);
         }
-        return BadRequest(result.Error.Message);
+        return BadRequest(result.ErrorMessage);
     }
 
     [HttpGet("GetFridgeById")]
@@ -35,10 +35,10 @@ public class FridgeController : ControllerBase
     {
         var result = await _fridgeService.GetFridgeById(fridgeId);
 
-        if (result.Error == null)
+        if (result.ErrorMessage == null)
         {
             return Ok(result.Fridge);
         }
-        return BadRequest(result.Error.Message);
+        return BadRequest(result.ErrorMessage);
     }
 }

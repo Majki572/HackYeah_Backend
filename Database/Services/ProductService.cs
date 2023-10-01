@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using Azure;
 using Database.Models;
 using Database.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -12,26 +14,39 @@ namespace Database.Services;
 public class ProductService : IProductService
 {
     public ApplicationContext _context { get; set; }
-    public ProductService(ApplicationContext context)
+    public readonly IMapper _mapper;
+    public ProductService(
+        ApplicationContext context,
+        IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
-    public async Task<BackendResponse> AddProductToFridge(ProductFridge product, int userId, int fridgeId)
+    public async Task<BackendResponse> AddProductToFridge(ProductDTOB product, int userId, int fridgeId)
     {
         var response = new BackendResponse();
-        var dbProduct = await _context.Products.FindAsync(product.Id);
-        if (dbProduct != null)
+        var dictionaryProduct = await _context.ProductDictionary.FindAsync(product.ProductDictionaryId);
+        if (dictionaryProduct != null)
         {
-            response.Error.Message = "Product with that id already exists.";
+            response.ErrorMessage = "Product with that id does not exist, please add to dictionary first.";
             return response;
         }
+        var productFridge = new ProductFridge();
+        productFridge.Quantity = product.Quantity;
+        productFridge.ExpirationDate = product.ExpirationDate;
+        productFridge.Description = product.Description;
+        productFridge.FridgeId = product.FridgeId;
+        productFridge.Weight = product.Weight;
+        productFridge.Calories = product.Calories;
+        productFridge.Name = dictionaryProduct.Name;
 
-        if(userId != fridgeId)
+
+        if (userId != fridgeId)
         {
-            response.Error.Message = "User id and fridge id does not match.";
+            response.ErrorMessage = "User id and fridge id does not match.";
             return response;
         }
-        await _context.Products.AddAsync(product);
+        await _context.Products.AddAsync(productFridge);
         await _context.SaveChangesAsync();
 
         return response;
@@ -42,7 +57,7 @@ public class ProductService : IProductService
         var response = new BackendResponse();
         if (fridgeId <= 0)
         {
-            response.Error.Message = "This fridge does not have any products.";
+            response.ErrorMessage = "This fridge does not have any products.";
             return response;
         }
 
@@ -50,7 +65,7 @@ public class ProductService : IProductService
 
         if (!response.Products.Any())
         {
-            response.Error.Message = "This fridge does not have any products.";
+            response.ErrorMessage = "This fridge does not have any products.";
             return response;
         }
 
@@ -62,7 +77,7 @@ public class ProductService : IProductService
         var response = new BackendResponse();
         if (userId != fridgeId)
         {
-            response.Error.Message = "User id and fridge id does not match.";
+            response.ErrorMessage = "User id and fridge id does not match.";
             return response;
         }
 
@@ -70,7 +85,7 @@ public class ProductService : IProductService
 
         if (dbProduct == null)
         {
-            response.Error.Message = "Product does not exist in this fridge.";
+            response.ErrorMessage = "Product does not exist in this fridge.";
             return response;
         }
 
@@ -86,7 +101,7 @@ public class ProductService : IProductService
         if (productId <= 0)
         {
             string errorMessage = "Product id must be greater than zero.";
-            backendResponse.Error.Message = errorMessage;
+            backendResponse.ErrorMessage = errorMessage;
             return backendResponse;
         }
 
@@ -113,31 +128,39 @@ public class ProductService : IProductService
         var response = new BackendResponse();
         if (userId != fridgeId)
         {
-            response.Error.Message = "User id and fridge id does not match.";
+            response.ErrorMessage = "User id and fridge id does not match.";
             return response;
         }
         if (product.Id != productId)
         {
-            response.Error.Message = "Provided product id and product id does not match.";
+            response.ErrorMessage = "Provided product id and product id does not match.";
             return response;
         }
         if (productId <= 0 || fridgeId <= 0 || userId <= 0)
         {
             string errorMessage = "Id must be greater than zero.";
-            response.Error.Message = errorMessage;
+            response.ErrorMessage = errorMessage;
             return response;
         }
 
         var result = await _context.Products.FindAsync(productId);
         if (result == null)
         {
-            response.Error.Message = "Product does not exist";
+            response.ErrorMessage = "Product does not exist";
             return response;
         }
 
         _context.Products.Update(product);
         await _context.SaveChangesAsync();
 
+        return response;
+    }
+
+    public async Task<BackendResponse> CreateProductsDictionary(ProductDictionary productDictionary)
+    {
+        var response = new BackendResponse();
+        var result = await _context.ProductDictionary.AddAsync(productDictionary);
+        await _context.SaveChangesAsync();
         return response;
     }
 }
