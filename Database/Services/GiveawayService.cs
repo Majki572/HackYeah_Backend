@@ -52,6 +52,13 @@ public class GiveawayService
             backendResponse.Error.Message = ex.Message;
         }
 
+        var existingConversation = _context.Conversations.FirstOrDefault(c =>
+            (c.User1Id == giveawayFromDb.AuthorId && c.User2Id == claimerId) ||
+            (c.User2Id == giveawayFromDb.AuthorId && c.User1Id == claimerId));
+
+        if (existingConversation != null)
+            return backendResponse;
+        
         Conversation conversation = new Conversation()
         {
             User1Id = giveawayFromDb.AuthorId,
