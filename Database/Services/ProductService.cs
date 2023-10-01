@@ -123,7 +123,7 @@ public class ProductService : IProductService
         return backendResponse;
     }
 
-    public async Task<BackendResponse> UpdateProduct(int userId, int fridgeId, int productId, ProductFridge product)
+    public async Task<BackendResponse> UpdateProduct(ProductDTOB product, int productId)
     {
         var response = new BackendResponse();
         //if (userId != fridgeId)
@@ -131,17 +131,17 @@ public class ProductService : IProductService
         //    response.ErrorMessage = "User id and fridge id does not match.";
         //    return response;
         //}
-        if (product.Id != productId)
-        {
-            response.ErrorMessage = "Provided product id and product id does not match.";
-            return response;
-        }
-        if (productId <= 0 || fridgeId <= 0 || userId <= 0)
-        {
-            string errorMessage = "Id must be greater than zero.";
-            response.ErrorMessage = errorMessage;
-            return response;
-        }
+        //if (product.Id != productId)
+        //{
+        //    response.ErrorMessage = "Provided product id and product id does not match.";
+        //    return response;
+        //}
+        //if (productId <= 0 || fridgeId <= 0 || userId <= 0)
+        //{
+        //    string errorMessage = "Id must be greater than zero.";
+        //    response.ErrorMessage = errorMessage;
+        //    return response;
+        //}
 
         var result = await _context.Products.FindAsync(productId);
         if (result == null)
@@ -149,8 +149,12 @@ public class ProductService : IProductService
             response.ErrorMessage = "Product does not exist";
             return response;
         }
-
-        _context.Products.Update(product);
+        result.Quantity = product.Quantity;
+        result.ExpirationDate = product.ExpirationDate;
+        result.Description = product.Description;
+        result.Weight = product.Weight;
+        result.Calories = product.Calories;
+        _context.Products.Update(result);
         await _context.SaveChangesAsync();
 
         return response;

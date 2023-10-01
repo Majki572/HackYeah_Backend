@@ -102,16 +102,16 @@ public class ProductController : ControllerBase
         return BadRequest(result.ErrorMessage);
     }
 
-    [HttpGet("UpdateProduct")]
+    [HttpPost("UpdateProduct")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductFridge))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<List<ProductDTO>>> UpdateProduct([FromBody] ProductFridge product, int userId, int fridgeId, int productId)
+    public async Task<ActionResult<List<ProductDTO>>> UpdateProduct([FromBody] ProductDTOB product, int productId)
     {
-        var result = await _productService.UpdateProduct(userId, fridgeId, productId, product);
+        var result = await _productService.UpdateProduct(product, productId);
 
         if (result.ErrorMessage == null)
         {
-            return CreatedAtAction("GetProductById", new { id = fridgeId }, product);
+            return CreatedAtAction("GetProductById", new { id = productId }, product);
         }
         return BadRequest(result.ErrorMessage);
     }
