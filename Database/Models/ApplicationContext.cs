@@ -30,6 +30,8 @@ public class ApplicationContext : DbContext
     public DbSet<Message> Messages { get; set; }
     public DbSet<ProductDictionary> ProductDictionary { get; set; }
     public DbSet<Meal> Meals { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Fridge>()
