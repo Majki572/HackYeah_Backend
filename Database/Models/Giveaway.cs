@@ -33,6 +33,9 @@ namespace Database.Models
         public int? Amount { get; set; }
 
         public string Description { get; set; } = null!;
+        public bool IsMeal { get; set; }
+        public DateTime? GetMealDate { get; set; }
+        public DateTime? OfferMealDate { get; set; }
     }
 
 }
