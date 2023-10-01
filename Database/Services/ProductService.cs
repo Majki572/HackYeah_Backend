@@ -26,7 +26,7 @@ public class ProductService : IProductService
     {
         var response = new BackendResponse();
         var dictionaryProduct = await _context.ProductDictionary.FindAsync(product.ProductDictionaryId);
-        if (dictionaryProduct != null)
+        if (dictionaryProduct == null)
         {
             response.ErrorMessage = "Product with that id does not exist, please add to dictionary first.";
             return response;
