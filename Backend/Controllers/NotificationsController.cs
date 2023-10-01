@@ -1,6 +1,7 @@
 ﻿using Backend.DTO;
 using Database.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Controllers;
 
@@ -54,7 +55,7 @@ public class NotificationsController : ControllerBase
 
     private void GenerateNotificationsFromChat(int userId)
     {
-        var chats = _applicationContext.Conversations.Where(x => x.User1Id == userId || x.User2Id == userId).ToList();
+        var chats = _applicationContext.Conversations.Where(x => x.User1Id == userId || x.User2Id == userId).Include(c => c.Messages).ToList();
         if (chats is null || !chats.Any())
             return;
 
